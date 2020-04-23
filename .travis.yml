@@ -1,0 +1,33 @@
+sudo: required
+language: generic
+services:
+  - docker
+
+before_install:
+  - echo "before install"
+
+install:
+  - echo "install nothing"
+
+script:
+  - echo "no tests"
+
+after_success:
+  - docker --version
+  - pip install --user awscli
+  - export PATH=$PATH:$HOME/.local/bin
+  - aws ecr get-login-password --region us-east-1
+  - docker build -t docker-node-api02 .
+  - bash docker_push.sh
+  - bash ecs_deploy.sh
+
+env:
+  global:
+  - DOCKER_REPO=docker-node-api02
+  - EB_REGION="us-east-1"
+  - LIVE_SERVICE=santoro-fargate-service02
+  - LIVE_CLUSTER_NAME=santoro-ecs-cluster02
+  - AWS_PAGER=""
+  - secure: NxpnCb23qoVMndkPf4iaZk5Fc537bm7SLmnTSS0h/ofGjy9h/wbDOWp1sZCc4YeWydeXYiKA6laSpy4DZDzMTZHfL83UIOUqlyFMAAUE8uERMZDxfbg22L5gkLzdYb421NKnJdr60AlsarLl72/GbbpXcrIL9IUTRemZgWW2BJgxHxFhbAYMXDdnGmJURI3JbO867T4An2NVqpdIsr1k5ZF0joB3tEdh9Tsm9PEm7JELNlNmaaLtlRdxhNmC1Iggpc9AKKJubqMzer6BXZxZRj61316mx2rUQdjf3D+hkAbrhaW3uE2K1gW2QLIq02IYvHwJYdUjgOH0UqcDcg9qUR0cMDM94QEx1KlZXOFwPiaQEgL8W54x0KSVBsT7XUdzXjvY1VAvMUbEQJhShHU4fEyILgt7zB+1pS/UL0ohsXRTAz1Kahzt0iIZgjiD7c20c/wty+1mcDMMczYC2HdxFyx+iAfa4Ew15qTxO/DwmjXS3UY8SCb4Yu0+WSrdcqtbR4VbO0tuxop94vkNlJ9kAvGhX/vCPEyifQZKRbNo4dkkHlFttn3ra+GnBtjUCj239OyijixForkLSb0Tzldzo6/gOe2lNqabeS/dWGcJ5ex3HK7q68kF7qmLOaOgkWzHYITHoARFZSxz3ucTKg5UkRuvGDhcFj3hVxGym6QFfxM=
+  - secure: Hll3jkOD6P998gSUr7dIeRLOafJCyrGeebsOWqm0NnqDLDzcu/pFAeV8yR3V8sUrD3E+kDIjGXczrHitq284nPgGUZNSSVdy0Tilv+L4swheB7IM4dZWxyLD7quR+0HIN8twRXYTEIt5LifJnATy22jp5gezJSgl1js2hDa3dF7fv6956DqL8XSyghcdj1EsBfisJRMDP4ccFvlPvVM0nSTXyIfvlP+EqPRAEzaZBprO9WgM0yIf+hEcSb/YZNESyDM62QIB7VwlmuZWq8Cag8VuvSJWACbn3u4kZ95dHnbpRWEEThWwopVm3Vt4+sROA4z4TphX4ehLOGWQE0jEoI0HTtPV8zMrdw43eyjODUl5ik8NypnYoM7aVq019+Mdaxx5UnL9ptijvnekqaxK+lPppCJIYOqx4hr1Y1ymbHoVVORfBeBUgR7U+QJFs0rs27+VdSdHquvlMDR01mHO2OO9dqvD7IJLIX7gD2JHF17elEEV5XhAnW2rk+ybsfHnIJYEQRibTpZtXDfFaQTRm4xpk/ngncbfYLkCTVxmCi6l7rLU0DWYlRvkM9P9WyUpyEJ20MSN0nKD3p9NXicgR7eMSXRJ3vBGSCCI2CfIWkCzfWeSJbrEdOluhfw2ijPP9TtAMYYGRnM9FruYyAJvwM9QzQjbrROHBGH6WQor3Cc=
+  - secure: b4hISD1LhLJuLjVPhWbl1/07M+42CmlNpai9jFB3TeBQcbNVijeF3SvHg9Lb7Vuhzf1tnD2PukcrnG/BpkFDEkDX0KktPFxif7RMuEmRxpdJ6SErdaW0TWuKyIoxe4vwHGQAnonfSlNm0PKjAZS1h0ZWYAqi3PBW8yJnhP5ILmge9JhD2k3D8cXCzdi5ThQ16eM4fdUFaaOI+j5lAfBS/IWKdNKNsiM1aINZ8Bsv8GN3+d08H42r1AMX4h/dLfMFikxJ5ysfafkMb6zntGInvDfAoo3ruFwtQ1gFzAzjsHMBuByGhfwDFIrpZ7I5wLqBGaYaVUmCK/7vFafM/L+/Lltj/0XghF5OgTKsTglOdh0tI8KD3/vNHqTRf9LBAvHo3ofBbDpJnv0HuetI1bBy04ZuC4zI+VOPAITbLwMKWqI9oQ//TPjihTrJtHlkxolUntn1Gyfk9gf8dTNmxMlTUVOvMy4qhf8W7x6N4k7Ivd4Hrw62Kk8tnTd0Ttfc8y/GEpl5JIXlyQ2iwA3z2B4F6Iy1/7pdfVsaUX1Gr2cRyc01G4YNFCTzBG7G9P+/RX/t7fSIdJPazS42I46NKFLMCSCkRfzF/hLeAPJ8kJQx5fjsu4iarH2pOwvOUx7Ndrz+A8ZMsw5ifLR6p132BlDzeu5neBkSu2WPXNbZRw7t3JE=

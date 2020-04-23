@@ -1,0 +1,11 @@
+# Para subir o Ambiente em modo DEV
+sudo docker-compose -f docker-compose-dev.yml up --build 
+
+# Para subir o Ambiente em modo PROD
+sudo docker-compose -f docker-compose-prod.yml up --build 
+
+# Comandos para Adicionar as Credenciais de autenticação da AWS ao .travis.yml
+travis encrypt AWS_ACCOUNT_ID="YOUR_ACCOUNT_ID" --add
+travis encrypt AWS_ACCESS_KEY_ID="YOUR_KEY_ID" --add
+travis encrypt AWS_SECRET_ACCESS_KEY="YOUR_SECRET_KEY" --add
+
