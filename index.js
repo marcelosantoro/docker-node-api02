@@ -32,7 +32,7 @@ function getDate(){
     return curData;
 }
 
-app.get('/', function(req, res){
+app.get('/app02', function(req, res){
     console.log(getDate()+" - Req IP: "+req.ip+" - EndPoint / - GET")
     result = "Acesso invalido ao endpoint /app02/";
 
@@ -53,7 +53,7 @@ app.get('/', function(req, res){
     res.json(response);
 });
 
-app.get('/api', function(req, res){
+app.get('/app02/api', function(req, res){
 
     console.log(getDate()+" - Req IP: "+req.ip+" - EndPoint /api - GET")
 
