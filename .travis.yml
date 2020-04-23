@@ -19,7 +19,7 @@ after_success:
   - aws ecr get-login-password --region us-east-1
   - docker build -t docker-node-api02 .
   - bash docker_push.sh
-  - bash ecs_deploy.sh
+  #- bash ecs_deploy.sh
 
 env:
   global:
